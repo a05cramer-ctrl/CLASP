@@ -1,0 +1,524 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Clasp · every trade feeds the clasp</title>
+<meta name="description" content="Launch a coin whose creator fees obey one rule, set at launch and fixed forever: burn, tithe, split, vest or follow.">
+<meta property="og:title" content="Clasp · every trade feeds the clasp">
+<meta property="og:description" content="One rule for a coin's creator fees, set at launch.">
+<meta property="og:image" content="og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#f5f6f0">
+<link rel="icon" href="pfp.jpg">
+<link rel="apple-touch-icon" href="pfp.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Serif:ital@1&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f5f6f0;--ink:#11130f;--mute:#6b6f63;--line:#d9dccf;--card:#fbfcf8;--lime:#b8f23a;--lime2:#9fd82a;--limeink:#2f4a00;--red:#d4452f}
+*{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none!important}
+html,body{overflow-x:clip}
+html{scroll-behavior:smooth;scroll-padding-top:64px}
+body{background:var(--bg);color:var(--ink);font:400 16px/1.55 "Bricolage Grotesque",system-ui,sans-serif;background-image:radial-gradient(#d9dccf 1px,transparent 1px);background-size:22px 22px}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;cursor:pointer;background:none;border:0}
+.mono{font-family:"JetBrains Mono",ui-monospace,monospace}
+.lab{font:500 11px/1.4 "JetBrains Mono",monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
+.wrap{max-width:1240px;margin:0 auto;padding:0 24px}
+/* nav */
+nav{position:sticky;top:0;z-index:50;background:rgba(245,246,240,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.nav{display:flex;align-items:stretch;height:56px;gap:0}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:20px;letter-spacing:-.02em;padding-right:22px}
+.logo svg{width:28px;height:28px}
+.nl{display:flex;align-items:stretch}
+.nl a{display:flex;align-items:center;padding:0 18px;border-left:1px solid var(--line);font:500 11px "JetBrains Mono",monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);transition:.15s}
+.nl a:hover{color:var(--ink);background:#eef0e4}
+.sp{flex:1}
+.pill{display:flex;align-items:center;gap:8px;border-left:1px solid var(--line);padding:0 16px;font:500 11px "JetBrains Mono",monospace;letter-spacing:.1em;color:var(--mute);text-transform:uppercase;white-space:nowrap}
+.pill .cp{display:inline-flex;align-items:center;gap:6px;color:var(--ink);cursor:pointer}
+.pill .dot{width:7px;height:7px;background:var(--lime2);display:inline-block}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:44px;padding:0 22px;border:1px solid var(--ink);font:700 12px "JetBrains Mono",monospace;letter-spacing:.12em;text-transform:uppercase;transition:.15s;white-space:nowrap}
+.btn.p{background:var(--lime);border-color:var(--ink);color:var(--ink)}
+.btn.p:hover{background:var(--lime2);transform:translate(-2px,-2px);box-shadow:3px 3px 0 var(--ink)}
+.btn.g{background:var(--card)}
+.btn.g:hover{background:#eef0e4;transform:translate(-2px,-2px);box-shadow:3px 3px 0 var(--ink)}
+.nb{margin:6px 0 6px 12px;height:44px}
+.xb{display:flex;align-items:center;justify-content:center;width:44px;height:44px;margin:6px 0 6px 12px;border:1px solid var(--line);background:var(--card)}
+.xb svg{width:16px;height:16px}
+/* hero */
+.hero{padding:64px 0 40px}
+.hg{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:56px;align-items:center}
+.eb{display:flex;align-items:center;gap:10px;margin-bottom:22px}
+.eb i{width:8px;height:8px;background:var(--lime2);display:inline-block}
+h1{font-weight:800;font-size:clamp(52px,7.4vw,104px);line-height:.92;letter-spacing:-.045em}
+h1 em{line-height:.9;font:italic 400 1.04em "Instrument Serif",serif;letter-spacing:-.02em;background:linear-gradient(transparent 66%,var(--lime) 66%,var(--lime) 94%,transparent 94%);padding:0 6px 0 2px;display:inline-block}
+.lead{font-size:18px;color:#3d4036;max-width:520px;margin:28px 0 30px}
+.cta{display:flex;gap:12px;flex-wrap:wrap}
+.card{background:var(--card);border:1px solid var(--ink);position:relative}
+.feed{min-width:0}
+.fh{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid var(--line);gap:10px;flex-wrap:wrap}
+.demo{font:700 10px "JetBrains Mono",monospace;letter-spacing:.14em;background:var(--ink);color:var(--lime);padding:3px 8px}
+.fs{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--line)}
+.fs>div{padding:14px 16px}
+.fs>div+div{border-left:1px solid var(--line)}
+.fs b{display:block;font:800 30px/1.1 "Bricolage Grotesque";letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.tbl{width:100%;border-collapse:collapse;font:500 12px "JetBrains Mono",monospace}
+.tbl th{font-weight:500;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);text-align:left;padding:10px 16px;border-bottom:1px solid var(--line)}
+.tbl td{padding:10px 16px;border-bottom:1px solid #e8eadf;white-space:nowrap}
+.tbl tr:last-child td{border-bottom:0}
+.tbl .r{text-align:right}
+.buy{color:#2c7a1a}.sell{color:var(--red)}
+.gn{color:#4a7a00;font-weight:700}
+.fl{height:274px;overflow:hidden}
+.fl tr.new td{background:#eef9cf;animation:fade 1.6s forwards}
+@keyframes fade{to{background:transparent}}
+.rtabs{display:flex;border-top:1px solid var(--line)}
+.rtabs button{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:11px 4px;font:500 11px "JetBrains Mono",monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);border-left:1px solid var(--line);transition:.15s}
+.rtabs button:first-child{border-left:0}
+.rtabs svg{width:14px;height:14px;flex:none}
+.rtabs button.on{background:var(--lime);color:var(--ink)}
+.rtabs button:hover:not(.on){background:#eef0e4;color:var(--ink)}
+/* marquee */
+.mq{border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);background:var(--ink);color:var(--lime);overflow:hidden;white-space:nowrap;padding:12px 0;font:500 12px "JetBrains Mono",monospace;letter-spacing:.14em;text-transform:uppercase}
+.mq div{display:inline-block;animation:mq 40s linear infinite}
+.mq span{margin:0 26px}
+.mq span:before{content:"";display:inline-block;width:6px;height:6px;background:var(--lime);margin-right:26px;vertical-align:middle}
+@keyframes mq{to{transform:translateX(-50%)}}
+/* sections */
+section{padding:84px 0 0}
+.sh{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;margin-bottom:34px}
+.num{font:italic 400 22px "Instrument Serif",serif;color:var(--mute)}
+h2{font-weight:800;font-size:clamp(34px,4.6vw,60px);line-height:1;letter-spacing:-.04em;margin-top:10px;max-width:760px;text-wrap:balance}
+.sub{color:#4a4d42;max-width:620px;margin-top:14px}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--ink);background:var(--card)}
+.stats>div{padding:22px 20px;border-left:1px solid var(--line);min-width:0}
+.stats>div:first-child{border-left:0}
+.stats b{display:block;font:800 clamp(28px,3.2vw,44px)/1.05 "Bricolage Grotesque";letter-spacing:-.04em;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.board{margin-top:22px;overflow-x:auto}
+.board .tbl td,.board .tbl th{padding:13px 20px}
+.cn{display:flex;align-items:center;gap:12px;font-family:"Bricolage Grotesque";font-size:16px;font-weight:700}
+.cn i{width:30px;height:30px;display:inline-flex;align-items:center;justify-content:center;font:700 11px "JetBrains Mono";font-style:normal;color:#fff;flex:none}
+.cn small{font:500 11px "JetBrains Mono";color:var(--mute);font-weight:400}
+.rank{font:italic 400 20px "Instrument Serif";color:var(--mute)}
+.chip{font:700 10px "JetBrains Mono";letter-spacing:.14em;text-transform:uppercase;padding:3px 8px;border:1px solid var(--line);background:#fff}
+/* rules */
+.rg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:1px solid var(--ink);background:var(--card)}
+.rc{padding:26px 24px 28px;border-left:1px solid var(--line);border-top:1px solid var(--line);text-align:left;transition:.15s;position:relative}
+.rc:nth-child(3n+1){border-left:0}
+.rc:nth-child(-n+3){border-top:0}
+.rc:hover{background:#eef0e4}
+.rc.on{background:var(--lime)}
+.rc .ic{width:38px;height:38px;border:1px solid var(--ink);display:flex;align-items:center;justify-content:center;margin-bottom:18px;background:var(--card)}
+.rc svg{width:20px;height:20px}
+.rc h3{font-weight:800;font-size:22px;letter-spacing:-.03em;margin-bottom:6px}
+.rc p{font-size:14px;color:#3d4036}
+.rc.on p{color:var(--ink)}
+.rc .k{position:absolute;right:16px;top:16px;font:italic 400 18px "Instrument Serif";color:var(--mute)}
+.rd{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);margin-top:22px;border:1px solid var(--ink);background:var(--card)}
+.rd>div{padding:34px 32px;min-width:0}
+.rd>div+div{border-left:1px solid var(--line)}
+.rd h3{font-weight:800;font-size:44px;letter-spacing:-.04em;line-height:1;margin:10px 0 16px}
+.rd p{color:#3d4036;margin-bottom:20px;max-width:480px}
+.tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px}
+.flow{display:flex;flex-direction:column;align-items:center;gap:0}
+.node{border:1px solid var(--ink);background:#fff;padding:12px 26px;font:700 12px "JetBrains Mono";letter-spacing:.12em;text-transform:uppercase;min-width:200px;text-align:center}
+.node.h{background:var(--lime)}
+.arr{width:1px;height:26px;background:var(--ink);position:relative}
+.arr:after{content:"";position:absolute;bottom:-1px;left:-4px;border:4.5px solid transparent;border-top:7px solid var(--ink);border-bottom:0}
+.leg{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%}
+.leg .node{min-width:0;padding:12px 8px;font-size:11px}
+/* sim */
+.sim{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);border:1px solid var(--ink);background:var(--card)}
+.sim>div{padding:30px 30px;min-width:0}
+.sim>div+div{border-left:1px solid var(--line)}
+.rng{width:100%;margin:12px 0 4px;accent-color:#11130f}
+.row{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px dashed var(--line);font:500 13px "JetBrains Mono"}
+.row b{font-weight:700}
+.bar{height:14px;background:#e8eadf;display:flex;margin:14px 0 8px;border:1px solid var(--ink)}
+.bar i{display:block;height:100%;transition:width .3s}
+/* steps */
+.st{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--ink);background:var(--card)}
+.st>div{padding:26px 22px;border-left:1px solid var(--line)}
+.st>div:first-child{border-left:0}
+.st .n{font:italic 400 40px "Instrument Serif";color:var(--mute);line-height:1}
+.st h3{font-weight:800;font-size:20px;letter-spacing:-.03em;margin:14px 0 6px}
+.st p{font-size:14px;color:#3d4036}
+/* launches */
+.lg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.lc{padding:20px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.lc .t{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.lc .m{display:grid;grid-template-columns:1fr 1fr;gap:10px;font:500 12px "JetBrains Mono"}
+.lc .m span{color:var(--mute);display:block;font-size:10px;letter-spacing:.12em;text-transform:uppercase}
+/* flywheel */
+.fw{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0;border:1px solid var(--ink);background:var(--card)}
+.fw>div{padding:34px 32px;min-width:0}
+.fw>div+div{border-left:1px solid var(--line)}
+.split{display:flex;height:46px;border:1px solid var(--ink);margin:18px 0 10px}
+.split i{display:flex;align-items:center;justify-content:center;font:700 11px "JetBrains Mono";font-style:normal;letter-spacing:.1em}
+/* faq */
+details{border-top:1px solid var(--ink);padding:0}
+details:last-child{border-bottom:1px solid var(--ink)}
+summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;gap:20px;padding:22px 4px;font-weight:700;font-size:20px;letter-spacing:-.02em}
+summary::-webkit-details-marker{display:none}
+summary:after{content:"+";font:400 26px/1 "JetBrains Mono"}
+details[open] summary:after{content:"–"}
+details p{padding:0 4px 24px;max-width:720px;color:#3d4036}
+/* docs table */
+.dt{width:100%;border-collapse:collapse;font:500 13px "JetBrains Mono",monospace}
+.dt td,.dt th{padding:14px 20px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+.dt th{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);font-weight:500}
+.dt td:first-child{font-weight:700;white-space:nowrap}
+.dt tr:last-child td{border-bottom:0}
+/* cta */
+.big{padding:64px 40px;text-align:center;background:var(--lime);border:1px solid var(--ink)}
+.big h2{margin:0 auto 12px;max-width:none}
+.big p{margin-bottom:26px}
+footer{margin-top:84px;border-top:1px solid var(--ink);padding:34px 0 46px;background:#eef0e4}
+.fg{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) minmax(0,1fr);gap:30px}
+.fg a{display:block;color:var(--mute);font:500 12px "JetBrains Mono";letter-spacing:.1em;text-transform:uppercase;margin-top:8px}
+.fg a:hover{color:var(--ink)}
+.disc{margin-top:28px;padding-top:18px;border-top:1px solid var(--line);font:500 11px/1.7 "JetBrains Mono";color:var(--mute);letter-spacing:.06em}
+.chk{display:flex;gap:8px;margin-top:14px}
+.chk input{flex:1;min-width:0;height:44px;border:1px solid var(--ink);background:#fff;padding:0 14px;font:500 13px "JetBrains Mono"}
+/* modal */
+.mod{position:fixed;inset:0;z-index:100;background:rgba(17,19,15,.55);display:flex;align-items:center;justify-content:center;padding:20px}
+.mb{background:#fff;border:1px solid var(--ink);width:min(820px,100%);box-shadow:8px 8px 0 var(--ink)}
+.mh{display:flex;justify-content:space-between;align-items:center;padding:12px 18px;border-bottom:1px solid var(--line)}
+.stage{height:min(340px,52vh);position:relative;background:var(--ink);color:#fff;overflow:hidden}
+.sc{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;opacity:0;transition:opacity .5s;padding:20px;text-align:center}
+.sc.on{opacity:1}
+.sc h4{font-weight:800;font-size:clamp(26px,4.4vw,46px);letter-spacing:-.04em;line-height:1}
+.sc h4 em{font:italic 400 1.05em "Instrument Serif";color:var(--lime)}
+.sc .mono{font-size:12px;letter-spacing:.14em;color:var(--lime);text-transform:uppercase}
+.mf{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:14px 18px;border-top:1px solid var(--line);flex-wrap:wrap}
+.pg{height:3px;background:var(--lime);width:0}
+.toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--lime);padding:12px 20px;font:700 12px "JetBrains Mono";letter-spacing:.12em;text-transform:uppercase;opacity:0;pointer-events:none;transition:.25s;z-index:200}
+.toast.on{opacity:1;transform:translateX(-50%)}
+.cpa{cursor:pointer}
+@media(max-width:1000px){
+.nl a:nth-child(n+4){display:none}
+.hg,.rd,.sim,.fw{grid-template-columns:minmax(0,1fr)}
+.rd>div+div,.sim>div+div,.fw>div+div{border-left:0;border-top:1px solid var(--line)}
+.stats,.st{grid-template-columns:repeat(2,minmax(0,1fr))}
+.stats>div:nth-child(3),.st>div:nth-child(3){border-left:0}
+.stats>div:nth-child(n+3),.st>div:nth-child(n+3){border-top:1px solid var(--line)}
+.rg{grid-template-columns:repeat(2,minmax(0,1fr))}
+.rc:nth-child(3n+1){border-left:1px solid var(--line)}.rc:nth-child(2n+1){border-left:0}
+.rc:nth-child(-n+3){border-top:1px solid var(--line)}.rc:nth-child(-n+2){border-top:0}
+.lg{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:640px){
+.wrap{padding:0 16px}
+.nl,.pill .lb,.xb,.pill:first-of-type{display:none}
+.pill{border-left:0;padding:0 8px}
+.pill .cp b{font-size:10px}
+.nb{margin-left:4px;padding:0 12px;font-size:11px}
+.logo{padding-right:8px}
+.hero{padding:40px 0 30px}
+h1{font-size:clamp(46px,14vw,70px)}
+section{padding-top:64px}
+.rg,.lg,.st,.stats{grid-template-columns:minmax(0,1fr)}
+.rc,.rc:nth-child(n){border-left:0;border-top:1px solid var(--line)}.rc:first-child{border-top:0}
+.stats>div,.st>div{border-left:0;border-top:1px solid var(--line)}.stats>div:first-child,.st>div:first-child{border-top:0}
+.rd>div,.sim>div,.fw>div{padding:24px 20px}
+.rd h3{font-size:36px}
+.fg{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.fg>div:first-child{grid-column:1/-1}
+.big{padding:44px 20px}
+.tbl th,.tbl td{padding:9px 10px}
+.fl .c3{display:none}
+.rtabs button{font-size:9px;gap:3px;padding:10px 2px}
+.rtabs svg{display:none}
+.btn{padding:0 16px}
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<symbol id="mk" viewBox="0 0 32 32"><rect width="32" height="32" fill="#11130f"/><rect x="5" y="11" width="14" height="10" rx="5" fill="none" stroke="#b8f23a" stroke-width="2.6"/><rect x="13" y="11" width="14" height="10" rx="5" fill="none" stroke="#fff" stroke-width="2.6"/></symbol>
+<symbol id="i-burn" viewBox="0 0 24 24"><path d="M12 3c1 4 5 5 5 10a5 5 0 0 1-10 0c0-2 1-3 2-4 0 2 1 3 2 3 0-3-1-5 1-9z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
+<symbol id="i-tithe" viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.4A4 4 0 0 1 19 10c0 5.6-7 10-7 10z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
+<symbol id="i-split" viewBox="0 0 24 24"><path d="M12 3v7M12 10l-6 6v5M12 10l6 6v5M12 10v11" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+<symbol id="i-vest" viewBox="0 0 24 24"><path d="M6 3h12M6 21h12M7 3c0 5 5 5 5 9s-5 4-5 9M17 3c0 5-5 5-5 9s5 4 5 9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+<symbol id="i-follow" viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+<symbol id="i-lot" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="9" cy="9" r="1.3"/><circle cx="15" cy="15" r="1.3"/><circle cx="12" cy="12" r="1.3"/></symbol>
+<symbol id="i-mix" viewBox="0 0 24 24"><circle cx="9" cy="12" r="5" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="15" cy="12" r="5" fill="none" stroke="currentColor" stroke-width="1.8"/></symbol>
+</svg>
+
+<nav>
+ <div class="wrap nav">
+  <a class="logo" href="#top"><svg><use href="#mk"/></svg>clasp</a>
+  <div class="nl"><a href="#top">Home</a><a href="#rules">Rules</a><a href="#launches">Launches</a><a href="#wars">Wars</a><a href="#run">Simulator</a><a href="#docs">Docs</a></div>
+  <div class="sp"></div>
+  <div class="pill"><span class="dot"></span><span class="lb">Solana · pump.fun</span></div>
+  <div class="pill cpa" id="capill" title="Copy CA"><span class="cp"><span class="lb">CA</span> <b id="cashort">dropping soon</b></span></div>
+  <a class="xb" id="xlink" href="#" aria-label="X"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M18.2 2.3h3.3l-7.2 8.3 8.5 11.2h-6.7l-5.2-6.8-6 6.8H1.6l7.7-8.8L1.2 2.3H8l4.7 6.2zm-1.2 17.5h1.8L7 4.2H5z"/></svg></a>
+  <a class="btn p nb" id="buy1" href="#">Buy $CLASP</a>
+ </div>
+</nav>
+
+<main id="top">
+<header class="hero">
+ <div class="wrap hg">
+  <div>
+   <div class="eb"><i></i><span class="lab">Creator-fee clasps · pump.fun · Solana</span></div>
+   <h1>Every trade<br>feeds the <em>clasp.</em></h1>
+   <p class="lead">Launch a coin whose creator fees can only do one thing. The fees land in the coin's own clasp, and the clasp follows the rule you set at launch: burn, tithe, split, vest or follow another coin. One rule, fixed forever. No admin switch.</p>
+   <div class="cta"><a class="btn p" href="#run">Launch a token →</a><a class="btn g" href="#rules">The five rules</a><button class="btn g" id="film">▶ 15 sec film</button></div>
+  </div>
+  <div class="card feed">
+   <div class="fh"><span class="lab">Trades feeding the clasp · sample</span><span class="demo">DEMONSTRATION</span></div>
+   <div class="fs"><div><span class="lab">Trades</span><b id="ft">0</b></div><div><span class="lab">Fees → clasps (SOL)</span><b id="ff">0.000</b></div></div>
+   <div class="fl"><table class="tbl"><thead><tr><th>Side</th><th>Coin</th><th class="c3">Size</th><th class="r">Fee → clasp</th><th class="c3">Rule</th></tr></thead><tbody id="fb"></tbody></table></div>
+   <div class="rtabs" id="htabs"></div>
+  </div>
+ </div>
+</header>
+
+<div class="mq"><div id="mq"></div></div>
+
+<section id="board">
+ <div class="wrap">
+  <div class="sh"><div><span class="num">01</span> <span class="lab">Live board</span><h2>What the clasps did.</h2><p class="sub">Every number here is meant to be read straight from each clasp's own receipts. Nothing is a promise. The figures below are sample data until the first clasp runs.</p></div><span class="demo">DEMONSTRATION</span></div>
+  <div class="stats">
+   <div><b data-n="1284.6" data-d="1">0</b><span class="lab">SOL through clasps · all time</span></div>
+   <div><b data-n="96.42" data-d="2">0</b><span class="lab">SOL swept in 24h</span></div>
+   <div><b data-n="41.07" data-d="2">0</b><span class="lab">SOL burned in 24h</span></div>
+   <div><b data-n="318" data-d="0">0</b><span class="lab">Runs in 24h</span></div>
+  </div>
+ </div>
+</section>
+
+<section id="wars">
+ <div class="wrap">
+  <div class="sh"><div><span class="num">02</span> <span class="lab">Clasp Wars</span><h2>Season 2, sample standings.</h2><p class="sub">Every clasp that runs puts its coin on the board. The coin that pushed the most through its rule in a season takes the crown.</p></div><span class="demo">DEMONSTRATION</span></div>
+  <div class="card board"><table class="tbl"><thead><tr><th>#</th><th>Coin</th><th>Rule</th><th>Into the clasp</th><th class="r">Runs</th></tr></thead><tbody id="wb"></tbody></table></div>
+ </div>
+</section>
+
+<section id="rules">
+ <div class="wrap">
+  <div class="sh"><div><span class="num">03</span> <span class="lab">Five rules</span><h2>Pick your clasp.</h2><p class="sub">Choose one rule when the coin launches. The clasp is a small program that knows that rule and nothing else.</p></div></div>
+  <div class="rg" id="rg"></div>
+  <div class="rd" id="rd"></div>
+ </div>
+</section>
+
+<section id="how">
+ <div class="wrap">
+  <div class="sh"><div><span class="num">04</span> <span class="lab">How it works</span><h2>Four steps. One signature.</h2></div></div>
+  <div class="st">
+   <div><div class="n">i.</div><h3>Name the coin</h3><p>Pick a name, ticker and image. It launches on pump.fun like any other coin.</p></div>
+   <div><div class="n">ii.</div><h3>Pick its rule</h3><p>Burn, tithe, split, vest or follow. This choice is written once.</p></div>
+   <div><div class="n">iii.</div><h3>Sign once</h3><p>You sign the launch and the fee assignment in one go. Clasp never holds your keys.</p></div>
+   <div><div class="n">iv.</div><h3>Trades feed it</h3><p>Every buy and sell sends creator fees to the clasp, and the clasp runs the rule.</p></div>
+  </div>
+ </div>
+</section>
+
+<section id="run">
+ <div class="wrap">
+  <div class="sh"><div><span class="num">05</span> <span class="lab">Run a clasp</span><h2>See where one trade goes.</h2><p class="sub">Pick a rule and a trade size. This is a worked example with a 1% creator fee, not a live feed.</p></div><span class="demo">DEMONSTRATION</span></div>
+  <div class="sim card">
+   <div>
+    <span class="lab">Rule</span>
+    <div class="rtabs" id="stabs" style="margin-top:10px;border:1px solid var(--ink)"></div>
+    <div style="margin-top:26px;display:flex;justify-content:space-between;align-items:baseline"><span class="lab">Trade size</span><b class="mono" id="sz" style="font-size:20px">10 SOL</b></div>
+    <input class="rng" id="szr" type="range" min="1" max="100" value="10">
+    <div style="margin-top:22px;display:flex;justify-content:space-between;align-items:baseline"><span class="lab">Creator fee</span><b class="mono" id="fee" style="font-size:20px">1.0%</b></div>
+    <input class="rng" id="feer" type="range" min="1" max="10" value="10">
+   </div>
+   <div>
+    <span class="lab">This trade, under <b id="sr" style="color:var(--ink)">burn</b></span>
+    <div id="srows" style="margin-top:6px"></div>
+    <div class="bar" id="sbar"></div>
+    <p class="mono" style="font-size:11px;color:var(--mute);letter-spacing:.04em" id="sn"></p>
+   </div>
+  </div>
+ </div>
+</section>
+
+<section id="launches">
+ <div class="wrap">
+  <div class="sh"><div><span class="num">06</span> <span class="lab">Already clasped</span><h2>Fresh clasps.</h2><p class="sub">Each launch lists its rule up front, so a buyer knows what the fees will do before they buy.</p></div><span class="demo">DEMONSTRATION</span></div>
+  <div class="lg" id="lg"></div>
+ </div>
+</section>
+
+<section id="fly">
+ <div class="wrap">
+  <div class="sh"><div><span class="num">07</span> <span class="lab">The flywheel</span><h2>Every clasp feeds the pad.</h2></div></div>
+  <div class="fw">
+   <div>
+    <span class="lab">Where each clasp's intake goes</span>
+    <div class="split"><i style="width:90%;background:var(--lime)">THE RULE · 90%</i><i style="width:10%;background:var(--ink);color:var(--lime)">10%</i></div>
+    <div class="row"><span>The rule runs on</span><b>90% of intake</b></div>
+    <div class="row"><span>Clasp treasury</span><b>10% of intake</b></div>
+    <p style="margin-top:18px;font-size:14px;color:#3d4036">The treasury share is a published v0 rule. It buys back and burns $CLASP at each epoch end.</p>
+   </div>
+   <div>
+    <span class="lab">Why one rule</span>
+    <h3 style="font-weight:800;font-size:32px;letter-spacing:-.035em;line-height:1.05;margin:12px 0 14px">A coin that can only do one thing can be read in one line.</h3>
+    <p style="color:#3d4036">No bot to trust, no multisig meeting, no "we're reviewing the fee wallet". Buyers read the rule once and it stays true.</p>
+   </div>
+  </div>
+ </div>
+</section>
+
+<section id="docs">
+ <div class="wrap">
+  <div class="sh"><div><span class="num">08</span> <span class="lab">Docs</span><h2>The rules, written down.</h2></div></div>
+  <div class="card board"><table class="dt"><thead><tr><th>Rule</th><th>What the clasp does</th><th>Fixed at launch</th></tr></thead><tbody>
+   <tr><td>burn</td><td>Each run swaps the intake for the coin and sends it to the burn address.</td><td>nothing to set</td></tr>
+   <tr><td>tithe</td><td>Each run sends the whole intake to one address.</td><td>the recipient</td></tr>
+   <tr><td>split</td><td>Each run shares the intake across up to five wallets by fixed shares.</td><td>wallets + shares</td></tr>
+   <tr><td>vest</td><td>The creator's intake unlocks linearly over a set period.</td><td>start + length</td></tr>
+   <tr><td>follow</td><td>Each run buys another coin and burns it.</td><td>the followed coin</td></tr>
+   <tr><td>mix</td><td>Combines the legs above with fixed percentages that sum to 100.</td><td>legs + shares</td></tr>
+  </tbody></table></div>
+  <p class="mono" style="font-size:11px;color:var(--mute);margin-top:14px;letter-spacing:.04em">These are the published v0 rules. No clasp program is deployed yet.</p>
+ </div>
+</section>
+
+<section id="faq">
+ <div class="wrap">
+  <div class="sh"><div><span class="num">09</span> <span class="lab">Questions</span><h2>Short answers.</h2></div></div>
+  <div>
+   <details><summary>Can the creator change the rule later?</summary><p>No. The rule is written once at launch. There is no admin switch and no upgrade path for a launched clasp.</p></details>
+   <details><summary>Does Clasp hold my keys?</summary><p>No. You sign the launch yourself. Clasp never has custody of your wallet or your coin.</p></details>
+   <details><summary>Which chain is this on?</summary><p>Solana. Coins launch on pump.fun and the creator fees are assigned to the clasp.</p></details>
+   <details><summary>Is anything on this page live?</summary><p>Only the CA, buy link, chart link and X link, once they're filled in. Every feed, board and number is labelled DEMONSTRATION.</p></details>
+  </div>
+ </div>
+</section>
+
+<section>
+ <div class="wrap"><div class="big"><span class="lab" style="color:var(--limeink)">Get clasped</span><h2>Name your token, pick its rule, sign once.</h2><p>One rule. Fixed forever.</p><div class="cta" style="justify-content:center"><a class="btn g" style="background:var(--ink);color:var(--lime)" href="#run">Open the launcher →</a><a class="btn g" href="#rules">Browse rules</a></div></div></div>
+</section>
+</main>
+
+<footer>
+ <div class="wrap">
+  <div class="fg">
+   <div><a class="logo" href="#top" style="padding:0;color:var(--ink);font:800 22px 'Bricolage Grotesque';text-transform:none;letter-spacing:-.02em;margin:0;display:flex"><svg style="width:28px;height:28px"><use href="#mk"/></svg>clasp</a>
+    <p style="font-size:14px;color:#3d4036;max-width:360px;margin-top:12px">Creator-fee clasps for pump.fun coins. One rule, set at launch.</p>
+    <div class="chk"><input id="alias" placeholder="coin name" aria-label="coin name"><button class="btn p" id="chkb" style="height:44px">Check rule</button></div>
+    <p class="mono" id="chkr" style="font-size:11px;color:var(--mute);margin-top:8px;min-height:18px"></p></div>
+   <div><span class="lab">Site</span><a href="#rules">Rules</a><a href="#launches">Launches</a><a href="#wars">Wars</a><a href="#docs">Docs</a></div>
+   <div><span class="lab">Links</span><a id="flx" href="#">X</a><a id="flbuy" href="#">Buy</a><a id="flch" href="#">Chart</a></div>
+  </div>
+  <p class="disc">Sample data. DEMONSTRATION. Every feed, board, standing and number on this page is an illustration, not a live feed. Clasp is not affiliated with pump.fun. Nothing here is financial advice.</p>
+ </div>
+</footer>
+
+<div class="mod" id="mod" hidden>
+ <div class="mb">
+  <div class="mh"><span class="lab">15 seconds · how a clasped coin works</span><button class="btn g" id="mx" style="height:34px;padding:0 14px">Skip</button></div>
+  <div class="stage" id="stg">
+   <div class="sc"><span class="mono">01 · a trade</span><h4>Someone buys<br>the coin.</h4></div>
+   <div class="sc"><span class="mono">02 · the fee</span><h4>1% goes to<br>the <em>clasp.</em></h4></div>
+   <div class="sc"><span class="mono">03 · the rule</span><h4>It follows<br>one <em>rule.</em></h4></div>
+   <div class="sc"><span class="mono">04 · fixed</span><h4>Nobody can<br>switch it.</h4></div>
+  </div>
+  <div class="pg" id="pg"></div>
+  <div class="mf"><span style="font-size:14px;color:#3d4036">Every trade feeds its clasp. The clasp obeys one rule you set at launch.</span><a class="btn p" href="#run" id="mgo">Launch a token →</a></div>
+ </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script src="config.js"></script>
+<script>
+(function(){
+var C=window.CLASP_CFG||{};
+var ca=C.CA||"",short=ca?ca.slice(0,4)+"…"+ca.slice(-4):"dropping soon";
+var buy=C.BUY||(ca?"https://pump.fun/coin/"+ca:""),chart=C.CHART||(ca?"https://gmgn.ai/sol/token/"+ca:""),x=C.X||"";
+function $(i){return document.getElementById(i)}
+function toast(t){var e=$("toast");e.textContent=t;e.classList.add("on");clearTimeout(toast.t);toast.t=setTimeout(function(){e.classList.remove("on")},2000)}
+$("cashort").textContent=short;
+$("capill").addEventListener("click",function(){if(!ca){toast("CA drops at launch");return}
+ try{navigator.clipboard.writeText(ca).then(function(){toast("CA copied")},function(){toast(ca)})}catch(e){toast(ca)}});
+[["buy1",buy],["flbuy",buy],["flch",chart],["xlink",x],["flx",x]].forEach(function(p){var a=$(p[0]);
+ if(p[1]){a.href=p[1];a.target="_blank";a.rel="noopener"}else{a.addEventListener("click",function(e){e.preventDefault();toast(p[0].indexOf("buy")>-1?"Drops at launch":"Coming at launch")})}});
+
+var RULES=[
+{k:"burn",n:"Burn",ic:"i-burn",d:"Every run swaps the intake for the coin itself and sends it to the burn address. Supply only goes down.",tags:["Fixed at launch","No creator skim","Pull-safe"],flow:["Trade","Creator fee","CLASP","Buy coin","Burn"],lead:"Every trade buys the coin back and burns it."},
+{k:"tithe",n:"Tithe",ic:"i-tithe",d:"The creator fee goes to one address you set at launch: a charity, a DAO, a builder. The clasp only knows that one address, so the creator can never redirect it.",tags:["Fixed at launch","No creator skim","Pull-safe payouts"],flow:["Trade","Creator fee","CLASP","Your cause"],lead:"Every trade donates to a cause you pick."},
+{k:"split",n:"Split",ic:"i-split",d:"Up to five wallets share the fee by fixed shares. The shares are written at launch and never rebalance.",tags:["Up to 5 wallets","Shares fixed","Pull-safe"],flow:["Trade","Creator fee","CLASP","Wallets A–E"],lead:"Up to five wallets share the fee, fixed forever."},
+{k:"vest",n:"Vest",ic:"i-vest",d:"The creator's own fees unlock slowly over a period set at launch. Anti-rug by construction: there is nothing to pull early.",tags:["Linear unlock","Start + length fixed","Anti-rug"],flow:["Trade","Creator fee","CLASP","Timelock","Creator"],lead:"The creator's fees unlock slowly."},
+{k:"follow",n:"Follow",ic:"i-follow",d:"Every run buys another coin you chose at launch and burns it. Your coin keeps another one scarce, with no pairing.",tags:["One followed coin","Buys + burns","Fixed at launch"],flow:["Trade","Creator fee","CLASP","Buy other coin","Burn"],lead:"Every trade buys another coin and burns it."}];
+var extra=[{k:"lottery",n:"Lottery",ic:"i-lot",lead:"The fee piles into a pot. Every N runs one holder takes it."},{k:"mix",n:"Mix & match",ic:"i-mix",lead:"Combine legs with shares: 50% burn, 30% cause, 20% vest."}];
+var cur=0;
+function ic(id){return '<svg><use href="#'+id+'"/></svg>'}
+// hero tabs
+var ht=$("htabs");RULES.forEach(function(r,i){var b=document.createElement("button");b.innerHTML=ic(r.ic)+r.n.toUpperCase();b.dataset.i=i;b.addEventListener("click",function(){setRule(i)});ht.appendChild(b)});
+// sim tabs
+var st=$("stabs");RULES.forEach(function(r,i){var b=document.createElement("button");b.innerHTML=ic(r.ic)+r.n.toUpperCase();b.addEventListener("click",function(){setRule(i)});st.appendChild(b)});
+// rule grid
+var rg=$("rg");RULES.concat(extra).forEach(function(r,i){var b=document.createElement("button");b.className="rc";b.innerHTML='<span class="k">'+(i<9?"0":"")+(i+1)+'</span><span class="ic">'+ic(r.ic)+'</span><h3>'+r.n+'</h3><p>'+r.lead+'</p>';b.addEventListener("click",function(){if(i<5)setRule(i,true);else toast("Sample rule, ships later")});rg.appendChild(b)});
+function setRule(i,scroll){cur=i;
+ [].forEach.call(ht.children,function(b,j){b.classList.toggle("on",j===i)});
+ [].forEach.call(st.children,function(b,j){b.classList.toggle("on",j===i)});
+ [].forEach.call(rg.children,function(b,j){b.classList.toggle("on",j===i)});
+ var r=RULES[i],f="";
+ r.flow.forEach(function(n,j){f+=(j?'<div class="arr"></div>':'')+'<div class="node'+(n==="CLASP"?" h":"")+'">'+n+'</div>'});
+ $("rd").innerHTML='<div><span class="lab">Rule · '+r.n+'</span><h3>'+r.n+'</h3><p>'+r.d+'</p><div class="tags">'+r.tags.map(function(t){return '<span class="chip">'+t+'</span>'}).join("")+'</div><a class="btn p" href="#run">Launch with this rule →</a></div><div style="display:flex;align-items:center;justify-content:center;background:repeating-linear-gradient(0deg,transparent 0 21px,#eef0e4 21px 22px)"><div class="flow">'+f+'</div></div>';
+ sim();
+ if(scroll){$("rd").scrollIntoView({behavior:"smooth",block:"center"})}}
+// sim
+function f3(v,d){return v.toFixed(d==null?3:d)}
+function sim(){var size=+$("szr").value,fp=+$("feer").value/10,fee=size*fp/100,r=RULES[cur];
+ $("sz").textContent=size+" SOL";$("fee").textContent=fp.toFixed(1)+"%";$("sr").textContent=r.k;
+ var tr=fee*.1,run=fee-tr,rows,bar,note;
+ function row(a,b){return '<div class="row"><span>'+a+'</span><b>'+b+'</b></div>'}
+ var head=row("Trade size",size+" SOL")+row("Creator fee ("+fp.toFixed(1)+"%)",f3(fee)+" SOL")+row("Clasp treasury (10%)",f3(tr)+" SOL");
+ var legs;
+ if(r.k==="burn"){legs=[["Bought + burned",run,"#b8f23a"]];note="The clasp swaps the intake for the coin and burns it."}
+ if(r.k==="tithe"){legs=[["To your cause",run,"#b8f23a"]];note="One address, set at launch."}
+ if(r.k==="split"){legs=[["Wallet A · 40%",run*.4,"#b8f23a"],["Wallet B · 25%",run*.25,"#9fd82a"],["Wallet C · 20%",run*.2,"#d9dccf"],["Wallet D · 15%",run*.15,"#11130f"]];note="Shares are fixed at launch (sample shares)."}
+ if(r.k==="vest"){legs=[["Locked for creator",run,"#b8f23a"]];note="Unlocks linearly (sample: 90 days), about "+f3(run/90,4)+" SOL per day from this trade."}
+ if(r.k==="follow"){legs=[["Followed coin bought + burned",run,"#b8f23a"]];note="Buys the one coin set at launch."}
+ var tot=fee||1;
+ $("srows").innerHTML=head+legs.map(function(l){return row(l[0],f3(l[1])+" SOL")}).join("");
+ $("sbar").innerHTML='<i style="width:'+(tr/tot*100)+'%;background:#11130f"></i>'+legs.map(function(l){return '<i style="width:'+(l[1]/tot*100)+'%;background:'+l[2]+'"></i>'}).join("");
+ $("sn").textContent=note+" Illustration only."}
+$("szr").addEventListener("input",sim);$("feer").addEventListener("input",sim);
+// feed
+var COINS=[["$STAND","burn"],["$HOLM","tithe"],["$ORCH","split"],["$VAULT","vest"],["$TIDE","follow"],["$MARL","burn"],["$GRAIN","split"],["$LUMEN","tithe"]];
+var ft=0,ff=0,fb=$("fb");
+function addTrade(){var c=COINS[Math.floor(Math.random()*COINS.length)],buys=Math.random()>.45,sz=+(Math.random()*8+.2).toFixed(2),fee=sz*.01;
+ ft++;ff+=fee;$("ft").textContent=ft;$("ff").textContent=ff.toFixed(3);
+ var tr=document.createElement("tr");tr.className="new";
+ tr.innerHTML='<td class="'+(buys?"buy":"sell")+'">'+(buys?"BUY":"SELL")+'</td><td><b>'+c[0]+'</b></td><td class="c3">'+sz.toFixed(2)+' SOL</td><td class="r gn">+'+fee.toFixed(4)+'</td><td class="c3">'+c[1].toUpperCase()+'</td>';
+ fb.insertBefore(tr,fb.firstChild);while(fb.children.length>7)fb.removeChild(fb.lastChild)}
+for(var i=0;i<6;i++)addTrade();
+setInterval(addTrade,2600);
+// marquee
+var mw=["Solana · pump.fun","Burn","Tithe","Split","Vest","Follow","One rule, fixed forever","No admin switch","No keys held"],mh="";
+for(var k=0;k<4;k++)mw.forEach(function(w){mh+="<span>"+w+"</span>"});$("mq").innerHTML=mh;
+// wars
+var W=[["$STAND","burn","412.80",44,"#2f4bff"],["$HOLM","tithe","287.35",58,"#e8672b"],["$ORCH","split","141.02",31,"#11130f"],["$VAULT","vest","96.40",19,"#7a3ff0"],["$TIDE","follow","61.77",12,"#1f8a5a"]];
+$("wb").innerHTML=W.map(function(w,i){return '<tr><td class="rank">'+(i?("0"+(i+1)):"★")+'</td><td><div class="cn"><i style="background:'+w[4]+'">'+w[0].slice(1,3)+'</i>'+w[0]+' <small>sample coin</small></div></td><td><span class="chip">'+w[1]+'</span></td><td class="gn">'+w[2]+' SOL</td><td class="r">'+w[3]+'</td></tr>'}).join("");
+// launches
+var L=[["$MARL","burn","3m ago","6.2","41"],["$GRAIN","split","11m ago","3.8","27"],["$LUMEN","tithe","26m ago","9.4","63"],["$ORCH","split","1h ago","141.0","312"],["$VAULT","vest","2h ago","96.4","205"],["$TIDE","follow","3h ago","61.8","148"]];
+$("lg").innerHTML=L.map(function(l){return '<div class="card lc"><div class="t"><div class="cn"><i style="background:#11130f;color:#b8f23a">'+l[0].slice(1,3)+'</i>'+l[0]+'</div><span class="chip">'+l[1]+'</span></div><div class="m"><div><span>Launched</span>'+l[2]+'</div><div><span>Into clasp</span>'+l[3]+' SOL</div><div><span>Runs</span>'+l[4]+'</div><div><span>Rule fixed</span>yes</div></div></div>'}).join("");
+// counters
+var cs=[].slice.call(document.querySelectorAll("[data-n]"));
+function count(e){var n=+e.dataset.n,d=+e.dataset.d,t0=null;function s(t){t0=t0||t;var p=Math.min(1,(t-t0)/1300),v=n*(1-Math.pow(1-p,3));e.textContent=v.toLocaleString("en-US",{minimumFractionDigits:d,maximumFractionDigits:d});if(p<1)requestAnimationFrame(s)}requestAnimationFrame(s)}
+cs.forEach(function(e){var n=+e.dataset.n,d=+e.dataset.d;e.textContent=n.toLocaleString("en-US",{minimumFractionDigits:d,maximumFractionDigits:d})});
+if("IntersectionObserver" in window){var io=new IntersectionObserver(function(en){en.forEach(function(g){if(g.isIntersecting){count(g.target);io.unobserve(g.target)}})},{threshold:.4});cs.forEach(function(e){io.observe(e)})}
+// rule check
+$("chkb").addEventListener("click",function(){var v=$("alias").value.trim();if(!v){$("chkr").textContent="type a coin name";return}
+ var h=0;for(var i=0;i<v.length;i++)h=(h*31+v.charCodeAt(i))>>>0;var r=RULES[h%5];$("chkr").textContent=v.toUpperCase()+" → sample result: "+r.k+" (DEMONSTRATION)"});
+// film
+var mod=$("mod"),sc=[].slice.call(document.querySelectorAll("#stg .sc")),ti=null,pg=$("pg");
+function closeF(){mod.hidden=true;clearInterval(ti);pg.style.width="0"}
+$("film").addEventListener("click",function(){mod.hidden=false;var i=0,t=0;sc.forEach(function(s,j){s.classList.toggle("on",j===0)});pg.style.width="0";clearInterval(ti);ti=setInterval(function(){t+=100;pg.style.width=Math.min(100,t/150)+"%";var j=Math.min(3,Math.floor(t/3750));sc.forEach(function(s,k){s.classList.toggle("on",k===j)});if(t>=15000)closeF()},100)});
+$("mx").addEventListener("click",closeF);$("mgo").addEventListener("click",closeF);
+mod.addEventListener("click",function(e){if(e.target===mod)closeF()});
+document.addEventListener("keydown",function(e){if(e.key==="Escape")closeF()});
+setRule(0);
+})();
+</script>
+</body>
+</html>
